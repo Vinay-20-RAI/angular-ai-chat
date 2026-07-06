@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(node -e ' *)",
+      "PowerShell(Write-Output \"ANTHROPIC_API_KEY \\(Process\\): [$env:ANTHROPIC_API_KEY]\"; Write-Output \"ANTHROPIC_API_KEY \\(User\\): [$\\([Environment]::GetEnvironmentVariable\\('ANTHROPIC_API_KEY','User'\\)\\)]\"; Write-Output \"ANTHROPIC_API_KEY \\(Machine\\): [$\\([Environment]::GetEnvironmentVariable\\('ANTHROPIC_API_KEY','Machine'\\)\\)]\")",
+      "PowerShell(Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Get-Process -Id $_ -ErrorAction SilentlyContinue | Select-Object Id, ProcessName, Path, StartTime })",
+      "PowerShell(Stop-Process -Id 27036 -Force -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue)",
+      "Bash(pkill -f \"node backend/proxy.js\")"
+    ]
+  }
+}
