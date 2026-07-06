@@ -7,7 +7,8 @@
       "PowerShell(Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Get-Process -Id $_ -ErrorAction SilentlyContinue | Select-Object Id, ProcessName, Path, StartTime })",
       "PowerShell(Stop-Process -Id 27036 -Force -ErrorAction SilentlyContinue)",
       "PowerShell(Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue)",
-      "Bash(pkill -f \"node backend/proxy.js\")"
+      "Bash(pkill -f \"node backend/proxy.js\")",
+      "Bash(npx ng *)"
     ]
   }
 }

@@ -68,28 +68,28 @@ import { ClaudeService } from './claude.service';
       :host {
         display: block;
         height: 100vh;
+        width: 100%;
       }
 
       .chat-shell {
         display: flex;
         flex-direction: column;
         height: 100%;
-        max-width: 760px;
-        margin: 0 auto;
-        background: #ffffff;
-        box-shadow: 0 0 24px rgba(0, 0, 0, 0.06);
+        width: 100%;
+        background: #fafafa;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       }
 
       .chat-header {
         padding: 1rem 1.5rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid #e0e0e0;
         background: #ffffff;
       }
 
       .chat-header h1 {
         margin: 0;
         font-size: 1.25rem;
-        color: #1e3a8a;
+        color: #1a73e8;
       }
 
       .chat-header p {
@@ -101,11 +101,10 @@ import { ClaudeService } from './claude.service';
       .messages {
         flex: 1;
         overflow-y: auto;
-        padding: 1rem 1.25rem;
+        padding: 2rem;
         display: flex;
         flex-direction: column;
-        gap: 0.75rem;
-        background: #f9fafb;
+        gap: 1rem;
       }
 
       .empty-state {
@@ -116,8 +115,9 @@ import { ClaudeService } from './claude.service';
 
       .message-row {
         display: flex;
+        gap: 0.5rem;
         justify-content: flex-start;
-        animation: fade-in 0.25s ease-out;
+        animation: slideIn 0.3s ease-out;
       }
 
       .message-row.user {
@@ -125,25 +125,25 @@ import { ClaudeService } from './claude.service';
       }
 
       .bubble {
-        max-width: 78%;
-        padding: 0.65rem 0.95rem;
-        border-radius: 1rem;
-        line-height: 1.45;
-        font-size: 0.95rem;
+        max-width: 70%;
+        line-height: 1.6;
+        font-size: 1rem;
         word-wrap: break-word;
       }
 
       .bubble.user {
-        background: #2563eb;
+        background: #2196f3;
         color: #ffffff;
-        border-bottom-right-radius: 0.25rem;
+        border-radius: 12px 12px 4px 12px;
+        padding: 0.75rem 1rem;
       }
 
       .bubble.assistant {
         background: #ffffff;
-        color: #1a1a1a;
-        border: 1px solid #e5e7eb;
-        border-bottom-left-radius: 0.25rem;
+        color: #333;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px 12px 12px 4px;
+        padding: 1rem;
       }
 
       .markdown :first-child {
@@ -154,98 +154,181 @@ import { ClaudeService } from './claude.service';
         margin-bottom: 0;
       }
 
-      .markdown pre {
-        background: #f3f4f6;
-        padding: 0.6rem;
-        border-radius: 0.5rem;
-        overflow-x: auto;
+      .markdown h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 1rem 0 0.5rem;
+        color: #1a73e8;
+      }
+
+      .markdown h2 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin: 0.75rem 0 0.4rem;
+        color: #1a73e8;
+      }
+
+      .markdown h3 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin: 0.6rem 0 0.3rem;
+        color: #1a73e8;
+      }
+
+      .markdown p {
+        margin: 0.5rem 0;
       }
 
       .markdown code {
-        font-family: 'SFMono-Regular', Consolas, monospace;
-        font-size: 0.85em;
+        background: #f5f5f5;
+        padding: 0.2rem 0.4rem;
+        border-radius: 3px;
+        font-family: 'SFMono-Regular', 'Courier New', monospace;
+        font-size: 0.9rem;
+      }
+
+      .markdown pre {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 1rem;
+        border-radius: 6px;
+        overflow-x: auto;
+        margin: 0.5rem 0;
+        font-family: 'SFMono-Regular', 'Courier New', monospace;
+        font-size: 0.85rem;
+      }
+
+      .markdown pre code {
+        background: none;
+        padding: 0;
+        color: inherit;
+      }
+
+      .markdown ul,
+      .markdown ol {
+        margin: 0.5rem 0 0.5rem 1.5rem;
+      }
+
+      .markdown li {
+        margin: 0.3rem 0;
+      }
+
+      .markdown strong {
+        font-weight: 600;
+        color: #1a73e8;
+      }
+
+      .markdown table {
+        border-collapse: collapse;
+        margin: 0.5rem 0;
+        width: 100%;
+      }
+
+      .markdown th,
+      .markdown td {
+        border: 1px solid #ddd;
+        padding: 0.5rem;
+        text-align: left;
+      }
+
+      .markdown th {
+        background: #f5f5f5;
+        font-weight: 600;
+      }
+
+      .markdown hr {
+        border: none;
+        border-top: 1px solid #ddd;
+        margin: 1rem 0;
       }
 
       .typing-indicator {
         display: inline-flex;
-        gap: 0.2rem;
-        padding: 0.15rem 0;
+        gap: 4px;
+        padding: 0.5rem;
       }
 
       .typing-indicator span {
-        width: 6px;
-        height: 6px;
+        width: 8px;
+        height: 8px;
         border-radius: 50%;
-        background: #9ca3af;
-        animation: bounce 1.2s infinite ease-in-out;
+        background: #999;
+        animation: pulse 1.4s infinite;
       }
 
       .typing-indicator span:nth-child(2) {
-        animation-delay: 0.15s;
+        animation-delay: 0.2s;
       }
 
       .typing-indicator span:nth-child(3) {
-        animation-delay: 0.3s;
+        animation-delay: 0.4s;
       }
 
       .error-banner {
-        align-self: center;
-        background: #fef2f2;
-        color: #b91c1c;
-        border: 1px solid #fecaca;
-        padding: 0.5rem 0.9rem;
-        border-radius: 0.5rem;
-        font-size: 0.85rem;
+        background: #ffebee;
+        color: #c62828;
+        padding: 1rem;
+        margin: 0 2rem;
+        border-radius: 4px;
+        border-left: 4px solid #c62828;
+        font-size: 0.9rem;
       }
 
       .input-bar {
         display: flex;
-        gap: 0.6rem;
-        padding: 0.85rem 1.25rem;
-        border-top: 1px solid #e5e7eb;
+        gap: 0.75rem;
+        padding: 1.5rem;
+        border-top: 1px solid #e0e0e0;
         background: #ffffff;
       }
 
       .input-field {
         flex: 1;
         resize: none;
-        border: 1px solid #d1d5db;
-        border-radius: 0.75rem;
-        padding: 0.6rem 0.85rem;
-        font-size: 0.95rem;
+        border: 1px solid #ddd;
+        border-radius: 24px;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
         font-family: inherit;
         max-height: 8rem;
+        outline: none;
+        transition: border-color 0.2s;
       }
 
       .input-field:focus {
-        outline: none;
-        border-color: #2563eb;
+        border-color: #2196f3;
+      }
+
+      .input-field:disabled {
+        background: #f5f5f5;
+        cursor: not-allowed;
       }
 
       .send-button {
         border: none;
-        border-radius: 0.75rem;
-        padding: 0 1.25rem;
-        background: #2563eb;
+        border-radius: 24px;
+        padding: 0.75rem 1.5rem;
+        background: #2196f3;
         color: #ffffff;
-        font-weight: 600;
+        font-size: 1rem;
+        font-weight: 500;
         cursor: pointer;
-        transition: background-color 0.15s ease;
+        transition: background 0.2s;
       }
 
       .send-button:disabled {
-        background: #93c5fd;
+        background: #ccc;
         cursor: not-allowed;
       }
 
       .send-button:not(:disabled):hover {
-        background: #1d4ed8;
+        background: #1976d2;
       }
 
-      @keyframes fade-in {
+      @keyframes slideIn {
         from {
           opacity: 0;
-          transform: translateY(4px);
+          transform: translateY(10px);
         }
         to {
           opacity: 1;
@@ -253,15 +336,13 @@ import { ClaudeService } from './claude.service';
         }
       }
 
-      @keyframes bounce {
+      @keyframes pulse {
         0%,
         60%,
         100% {
-          transform: translateY(0);
           opacity: 0.5;
         }
         30% {
-          transform: translateY(-4px);
           opacity: 1;
         }
       }
