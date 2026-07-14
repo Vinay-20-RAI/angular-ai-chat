@@ -1,6 +1,6 @@
 {
   "name": "angular-ai-chat",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Angular 21 streaming chat application with Claude API integration",
   "private": true,
   "scripts": {

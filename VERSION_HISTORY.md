@@ -1,5 +1,17 @@
 # Version History
 
+## 1.1.0 — 2026-07-14
+
+Phase 1 (Token Counting) release.
+
+**Backend**
+- `backend/proxy.js` — listens for the SDK's raw `streamEvent` alongside the existing `text`/`error` listeners; reads `input_tokens` from `message_start` and `output_tokens` from `message_delta`, attaching `usage: { inputTokens, outputTokens }` to the success-path `done` SSE event (the refusal path is unaffected)
+
+**Frontend**
+- `ClaudeService` (`src/app/chat/claude.service.ts`) forwards `event.usage` to `ChatStore.recordUsage()` when the `done` event carries it
+- `ChatStore` (`src/app/chat/chat.store.ts`) adds a `usageHistory` signal and computed `cumulativeInputTokens`, `cumulativeOutputTokens`, `estimatedCost`, and `isNearLimit` signals (placeholder $3/$15 per-million-token pricing — update `INPUT_COST_PER_MILLION_TOKENS`/`OUTPUT_COST_PER_MILLION_TOKENS` to match the actual `ANTHROPIC_MODEL` in use)
+- `ChatComponent` (`src/app/chat/chat.component.ts`) shows a usage stats line (cumulative input/output tokens, estimated cost) and an amber warning banner once cumulative input tokens exceed 150,000
+
 ## 1.0.0 — 2026-07-06
 
 Initial release.

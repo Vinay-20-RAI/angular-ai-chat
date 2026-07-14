@@ -2,6 +2,15 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.1.0] - 2026-07-14
+
+### Added
+
+- Token usage tracking (Phase 1): cumulative input/output token counts, an estimated cost, and a near-context-limit warning banner
+- Backend captures `input_tokens` / `output_tokens` from the raw Anthropic stream events (`message_start` / `message_delta`) and reports them on the SSE `done` event
+- `ChatStore.recordUsage()` plus computed `cumulativeInputTokens`, `cumulativeOutputTokens`, `estimatedCost`, and `isNearLimit` signals
+- Usage stats line and an amber "approaching context limit" banner in the chat UI
+
 ## [1.0.0] - 2026-07-06
 
 ### Added
