@@ -84,6 +84,14 @@ All backend configuration is via environment variables (see `.env.example`):
 
 The frontend's `apiUrl` is set in `environments/environment.ts` (dev) and `environments/environment.prod.ts` (prod) — point it at your deployed backend URL for production builds.
 
+## Token Usage & Cost Tracking
+
+Each assistant response reports its `input_tokens`/`output_tokens` (captured by the backend from the raw Anthropic stream events) back to the frontend on the SSE `done` event. `ChatStore` accumulates these across the conversation and exposes:
+
+- `cumulativeInputTokens` / `cumulativeOutputTokens` — running totals, shown in a stats line under the message list
+- `estimatedCost` — derived from per-million-token rates in `chat.store.ts` (`INPUT_COST_PER_MILLION_TOKENS` / `OUTPUT_COST_PER_MILLION_TOKENS`). **These are placeholder values ($3 / $15) — update them to match the actual pricing of whatever `ANTHROPIC_MODEL` you configure.**
+- `isNearLimit` — becomes `true` once cumulative input tokens exceed 150,000, surfacing a warning banner suggesting the user start a new conversation
+
 ## Security Notes
 
 - Never commit a real `.env` file — it's excluded via `.gitignore`.
