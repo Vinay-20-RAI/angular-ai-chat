@@ -66,8 +66,22 @@ app.post('/api/chat', async (req, res) => {
       messages,
     });
 
+    let inputTokens = 0;
+    let outputTokens = 0;
+
     stream.on('text', (textDelta) => {
       send({ type: 'text', text: textDelta });
+    });
+
+    // Raw SSE events carry usage info that isn't exposed by the higher-level
+    // 'text' event: input_tokens on message_start, output_tokens on each
+    // message_delta (the final delta holds the completed total).
+    stream.on('streamEvent', (event) => {
+      if (event.type === 'message_start') {
+        inputTokens = event.message.usage.input_tokens;
+      } else if (event.type === 'message_delta') {
+        outputTokens = event.usage.output_tokens;
+      }
     });
 
     stream.on('error', (streamErr) => {
@@ -82,7 +96,7 @@ app.post('/api/chat', async (req, res) => {
     if (finalMessage.stop_reason === 'refusal') {
       send({ type: 'error', message: 'Claude declined to respond to this request.' });
     } else {
-      send({ type: 'done' });
+      send({ type: 'done', usage: { inputTokens, outputTokens } });
     }
   } catch (err) {
     console.error('Claude API error:', err);

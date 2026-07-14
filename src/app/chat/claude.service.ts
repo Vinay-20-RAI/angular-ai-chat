@@ -7,6 +7,7 @@ interface StreamEvent {
   type: 'text' | 'done' | 'error';
   text?: string;
   message?: string;
+  usage?: { inputTokens: number; outputTokens: number };
 }
 
 /**
@@ -104,6 +105,7 @@ export class ClaudeService {
         this.store.setError(event.message ?? 'The assistant returned an error.');
         break;
       case 'done':
+        if (event.usage) this.store.recordUsage(event.usage);
         break;
     }
   }

@@ -8,7 +8,8 @@
       "PowerShell(Stop-Process -Id 27036 -Force -ErrorAction SilentlyContinue)",
       "PowerShell(Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue)",
       "Bash(pkill -f \"node backend/proxy.js\")",
-      "Bash(npx ng *)"
+      "Bash(npx ng *)",
+      "Bash(node --check backend/proxy.js)"
     ]
   }
 }
