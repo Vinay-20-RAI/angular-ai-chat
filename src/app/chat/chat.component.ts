@@ -1,4 +1,5 @@
 import { AfterViewChecked, Component, ElementRef, ViewChild, inject, signal } from '@angular/core';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { marked } from 'marked';
 import { ChatStore } from './chat.store';
@@ -7,6 +8,7 @@ import { ClaudeService } from './claude.service';
 @Component({
   selector: 'app-chat',
   standalone: true,
+  imports: [DecimalPipe, CurrencyPipe],
   template: `
     <div class="chat-shell">
       <header class="chat-header">
@@ -34,11 +36,24 @@ import { ClaudeService } from './claude.service';
           </div>
         }
 
+        @if (isNearLimit()) {
+          <div class="warning-banner" role="alert">
+            Approaching the context limit ({{ cumulativeInputTokens() | number }} input tokens
+            used) — consider starting a new conversation.
+          </div>
+        }
+
         @if (error(); as errorMessage) {
           <div class="error-banner" role="alert">{{ errorMessage }}</div>
         }
 
         <div #scrollAnchor></div>
+      </div>
+
+      <div class="usage-bar">
+        <span>{{ cumulativeInputTokens() | number }} in</span>
+        <span>{{ cumulativeOutputTokens() | number }} out</span>
+        <span>{{ estimatedCost() | currency: 'USD' : 'symbol' : '1.2-4' }} est.</span>
       </div>
 
       <div class="input-bar">
@@ -274,6 +289,27 @@ import { ClaudeService } from './claude.service';
         font-size: 0.9rem;
       }
 
+      .warning-banner {
+        background: #fff8e1;
+        color: #8a6d00;
+        padding: 1rem;
+        margin: 0 2rem;
+        border-radius: 4px;
+        border-left: 4px solid #f9a825;
+        font-size: 0.9rem;
+      }
+
+      .usage-bar {
+        display: flex;
+        justify-content: center;
+        gap: 1.25rem;
+        padding: 0.4rem 1.5rem;
+        background: #ffffff;
+        border-top: 1px solid #e0e0e0;
+        font-size: 0.78rem;
+        color: #6b7280;
+      }
+
       .input-bar {
         display: flex;
         gap: 0.75rem;
@@ -369,6 +405,10 @@ export class ChatComponent implements AfterViewChecked {
   readonly messages = this.store.messages;
   readonly loading = this.store.loading;
   readonly error = this.store.error;
+  readonly cumulativeInputTokens = this.store.cumulativeInputTokens;
+  readonly cumulativeOutputTokens = this.store.cumulativeOutputTokens;
+  readonly estimatedCost = this.store.estimatedCost;
+  readonly isNearLimit = this.store.isNearLimit;
   readonly draft = signal('');
 
   ngAfterViewChecked(): void {
